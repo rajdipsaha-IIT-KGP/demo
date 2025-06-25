@@ -175,3 +175,22 @@ body {
 .input-wrapper i:hover {
   color: #fff;
 }
+.signin-redirect {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.signin-redirect .signin-link {
+  color: #00c3ff;
+  cursor: pointer;
+  margin-left: 5px;
+  text-decoration: underline;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.signin-redirect .signin-link:hover {
+  color: #ffffff;
+}

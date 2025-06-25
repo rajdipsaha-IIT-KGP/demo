@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {useNavigate} from 'react-router-dom'
 import './Signup.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import axios from 'axios';
@@ -12,7 +13,7 @@ function Signup() {
   const [confirm, setConfirm] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-
+let navigate = useNavigate()
   const handleSignUp = async (e) => {
     e.preventDefault();
 
@@ -123,13 +124,13 @@ function Signup() {
 
         <button type="submit" className="signup-button" onClick={handleSignUp}>Register</button>
 
-        <div className="divider">
-          <span>OR</span>
-        </div>
+        
+  
+       <div className="signin-redirect">
+  <span>Already have an account?</span>
+  <span className="signin-link" onClick={() => navigate('/signin')}>Sign in</span>
+</div>
 
-        <button type="button" className="google-button">
-          <i className="fab fa-google"></i> Sign up with Google
-        </button>
       </form>
 
       <ToastContainer position="top-center" autoClose={3000} />
