@@ -68,6 +68,9 @@ message:"all fields required"
       return res.status(400).json({ message: "Invalid password" });
     }
 
+    if(fullname!==user.fullname){
+       return res.status(400).json({ message: "Invalid name" });
+    }
     const token = jwt.sign({ id: user._id.toString() }, JWT_SECRET, { expiresIn: '1h' });
 
     return res.json({

@@ -22,7 +22,8 @@ function Signin() {
       return;
     }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+;
     if (!emailRegex.test(email)) {
       toast.error("Please enter a valid email");
       return;
@@ -44,7 +45,11 @@ function Signin() {
         setName('');
         setPassword('');
         navigate('/welcome')
-      } else if (msg === "Invalid password") {
+      }
+      else if(msg === "Invalid name"){
+toast.error("Invalid Password");
+      }
+      else if (msg === "Invalid password") {
         toast.error("Invalid Password");
       } else {
         toast.error(msg);
