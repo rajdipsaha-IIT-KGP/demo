@@ -40,7 +40,7 @@ let navigate = useNavigate()
     }
 
     try {
-      const response = await axios.post('http://localhost:3000/signup', {
+      const response = await axios.post('https://demo-2-q8t9.onrender.com/signup', {
         fullname: name,
         email,
         password
