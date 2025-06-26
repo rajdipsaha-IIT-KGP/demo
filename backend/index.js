@@ -51,6 +51,39 @@ message:"all fields required"
     return res.status(500).json({ message: "Internal server error" });
   }
   })
+  // sign in directory
+  app.post('/signin',async function(req,res){
+      const {fullname,email,password} = req.body;
+  if(!fullname || !email || !password)
+    return res.status(400).json({
+message:"all fields required"
+   })
+   try{
+         const user = await UserModel.findOne({ email: email });
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    const isValidPass = await bcrypt.compare(password, user.password);
+    if (!isValidPass) {
+      return res.status(400).json({ message: "Invalid password" });
+    }
+
+    const token = jwt.sign({ id: user._id.toString() }, JWT_SECRET, { expiresIn: '1h' });
+
+    return res.json({
+      message: "User signed in successfully",
+      token: token,
+      user: {
+        id: user._id,
+        fullname: user.fullname,
+        email: user.email
+      }
+    });
+  } catch (err) {
+    console.error("Error signing in:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+  })
   app.listen(3000, function () {
   console.log("Server started on port 3000");
 });
