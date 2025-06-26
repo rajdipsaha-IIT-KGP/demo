@@ -135,3 +135,16 @@ body {
     transform: translateY(0);
   }
 }
+.form-group input[type="checkbox"] {
+  margin-right: 8px;
+  transform: scale(1.2);
+  accent-color: #4f46e5;
+  cursor: pointer;
+}
+
+.form-group label {
+  display: inline-block;
+  color: #e0e0e0;
+  font-weight: 500;
+  cursor: pointer;
+}

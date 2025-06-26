@@ -11,7 +11,7 @@ function Signin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
+  const [rememberMe,setrememberMe] = useState(false)
   let navigate = useNavigate();
 
   const handleSignin = async (e) => {
@@ -39,8 +39,14 @@ function Signin() {
       const msg = response.data.message;
       if (msg === "User signed in successfully") {
         toast.success(`Welcome ${response.data.user.fullname} 🎉`);
+        if(rememberMe){
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('user',JSON.stringify(response.data.user))
+      }
+      else{
+         sessionStorage.setItem('token', response.data.token);
+        sessionStorage.setItem('user',JSON.stringify(response.data.user))
+      }
         setEmail('');
         setName('');
         setPassword('');
@@ -105,13 +111,22 @@ toast.error("Invalid Password");
             ></i>
           </div>
         </div>
-
+     <div className="form-group">
+  <input
+    type="checkbox"
+    id="rememberMe"
+    checked={rememberMe}
+    onChange={(e) => setrememberMe(e.target.checked)}
+  />
+  <label htmlFor="rememberMe"> Remember me for 1 month</label>
+</div>
         <button type="submit" className="Signin-button">Sign In</button>
 
         <div className="signin-redirect">
           <span>Don't have an account?</span>
           <span className="signin-link" onClick={() => navigate('/signup')}>Create One</span>
         </div>
+   
       </form>
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
