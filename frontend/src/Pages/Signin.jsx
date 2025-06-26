@@ -39,9 +39,11 @@ function Signin() {
       if (msg === "User signed in successfully") {
         toast.success(`Welcome ${response.data.user.fullname} 🎉`);
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user',JSON.stringify(response.data.user))
         setEmail('');
         setName('');
         setPassword('');
+        navigate('/welcome')
       } else if (msg === "Invalid password") {
         toast.error("Invalid Password");
       } else {
