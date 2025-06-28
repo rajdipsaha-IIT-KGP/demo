@@ -22,13 +22,20 @@ function Signin() {
       return;
     }
 
- const emailRegex = /^[a-zA-Z0-9](?!.*\.\.)[a-zA-Z0-9._%+-]*[a-zA-Z0-9]@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-;
-;
-    if (!emailRegex.test(email)) {
-      toast.error("Please enter a valid email");
-      return;
-    }
+ const emailRegex = /^[a-zA-Z0-9](?!.*\.\.)[a-zA-Z0-9._%+-]{0,62}[a-zA-Z0-9]@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const [localPart] = email.split('@');
+
+if (
+  !emailRegex.test(email) ||
+  /^[.]+$/.test(localPart) ||        // Reject if only dots
+  /[<>\/]/.test(localPart) ||       // Reject if contains <, >, /
+  localPart.startsWith('.') ||      // Reject if starts with dot
+  localPart.endsWith('.')           // Reject if ends with dot
+) {
+  toast.error("Please enter a valid email address");
+  return;
+}
+
 
     try {
       const response = await axios.post('https://demo-2-q8t9.onrender.com/signin', {
