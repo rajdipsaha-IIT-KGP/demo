@@ -128,7 +128,7 @@ function Signin() {
 
         <button type="submit" className="Signin-button" disabled={loading}>
           {loading ? (
-            <div style={{ width: '30px', height: '30px' }}>
+            <div style={{ width: '70px', height: '70px' }}>
               <DotLottieReact
                 src="https://lottie.host/fae1307f-3cd4-4205-af77-c8a65d977497/l8A03soTO7.lottie"
                 loop
