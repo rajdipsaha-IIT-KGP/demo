@@ -5,14 +5,16 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 function Signin() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe,setrememberMe] = useState(false)
-  let navigate = useNavigate();
+  const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignin = async (e) => {
     e.preventDefault();
@@ -22,20 +24,21 @@ function Signin() {
       return;
     }
 
- const emailRegex = /^[a-zA-Z0-9](?!.*\.\.)[a-zA-Z0-9._%+-]{0,62}[a-zA-Z0-9]@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const [localPart] = email.split('@');
+    const emailRegex = /^[a-zA-Z0-9](?!.*\.\.)[a-zA-Z0-9._%+-]{0,62}[a-zA-Z0-9]@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const [localPart] = email.split('@');
 
-if (
-  !emailRegex.test(email) ||
-  /^[.]+$/.test(localPart) ||        // Reject if only dots
-  /[<>\/]/.test(localPart) ||       // Reject if contains <, >, /
-  localPart.startsWith('.') ||      // Reject if starts with dot
-  localPart.endsWith('.')           // Reject if ends with dot
-) {
-  toast.error("Please enter a valid email address");
-  return;
-}
+    if (
+      !emailRegex.test(email) ||
+      /^[.]+$/.test(localPart) ||
+      /[<>\/]/.test(localPart) ||
+      localPart.startsWith('.') ||
+      localPart.endsWith('.')
+    ) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
 
+    setLoading(true);
 
     try {
       const response = await axios.post('https://demo-2-q8t9.onrender.com/signin', {
@@ -45,32 +48,25 @@ if (
       });
 
       const msg = response.data.message;
+
       if (msg === "User signed in successfully") {
         toast.success(`Welcome ${response.data.user.fullname} 🎉`);
-        if(rememberMe){
         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user',JSON.stringify(response.data.user))
-      }
-      else{
-         localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user',JSON.stringify(response.data.user))
-      }
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         setEmail('');
         setName('');
         setPassword('');
-        navigate('/welcome')
-      }
-      else if(msg === "Invalid name"){
-toast.error("Invalid Password");
-      }
-      else if (msg === "Invalid password") {
-        toast.error("Invalid Password");
+        navigate('/welcome');
+      } else if (msg === "Invalid name" || msg === "Invalid password") {
+        toast.error("Invalid Credentials");
       } else {
         toast.error(msg);
       }
     } catch (error) {
       console.error("Error during Signin:", error);
       toast.error(error.response?.data?.message || "An error occurred during Signin");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,23 +115,37 @@ toast.error("Invalid Password");
             ></i>
           </div>
         </div>
-     <div className="form-group">
-  <input
-    type="checkbox"
-    id="rememberMe"
-    checked={rememberMe}
-    onChange={(e) => setrememberMe(e.target.checked)}
-  />
-  <label htmlFor="rememberMe"> Remember me for 1 month</label>
-</div>
-        <button type="submit" className="Signin-button">Sign In</button>
+
+        <div className="form-group">
+          <input
+            type="checkbox"
+            id="rememberMe"
+            checked={rememberMe}
+            onChange={(e) => setRememberMe(e.target.checked)}
+          />
+          <label htmlFor="rememberMe"> Remember me for 1 month</label>
+        </div>
+
+        <button type="submit" className="Signin-button" disabled={loading}>
+          {loading ? (
+            <div style={{ width: '30px', height: '30px' }}>
+              <DotLottieReact
+                src="https://lottie.host/fae1307f-3cd4-4205-af77-c8a65d977497/l8A03soTO7.lottie"
+                loop
+                autoplay
+              />
+            </div>
+          ) : (
+            "Sign In"
+          )}
+        </button>
 
         <div className="signin-redirect">
           <span>Don't have an account?</span>
           <span className="signin-link" onClick={() => navigate('/signup')}>Create One</span>
         </div>
-   
       </form>
+
       <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );

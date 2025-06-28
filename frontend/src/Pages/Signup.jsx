@@ -5,6 +5,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 function Signup() {
   const [name, setName] = useState('');
@@ -13,6 +14,7 @@ function Signup() {
   const [confirm, setConfirm] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [loading,setLoading] = useState(false)
 let navigate = useNavigate()
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -39,7 +41,7 @@ let navigate = useNavigate()
       toast.error("Passwords do not match");
       return;
     }
-
+setLoading(true)
     try {
       const response = await axios.post('https://demo-2-q8t9.onrender.com/signup', {
         fullname: name,
@@ -60,6 +62,9 @@ let navigate = useNavigate()
     } catch (error) {
       console.error("Error during signup:", error);
       toast.error(error.response?.data?.message || "An error occurred during signup");
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -123,7 +128,20 @@ let navigate = useNavigate()
           </div>
         </div>
 
-        <button type="submit" className="signup-button" onClick={handleSignUp}>Register</button>
+        <button type="submit" className="signup-button" onClick={handleSignUp} disabled={loading}>
+  {loading ? (
+    <div style={{ width: '30px', height: '30px' }}>
+      <DotLottieReact
+        src="https://lottie.host/fae1307f-3cd4-4205-af77-c8a65d977497/l8A03soTO7.lottie"
+        loop
+        autoplay
+      />
+    </div>
+  ) : (
+    "Register"
+  )}
+</button>
+
 
         
   
