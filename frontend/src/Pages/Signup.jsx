@@ -24,12 +24,12 @@ let navigate = useNavigate()
       toast.error("All fields are required");
       return;
     }
-
+   
       const emailRegex = /^[a-zA-Z0-9](?!.*\.\.)[a-zA-Z0-9._%+-]{0,62}[a-zA-Z0-9]@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       const [localPart] = email.split('@');
-      let str =""
+      let str = ""
       let flag = 0;
-      let matchstr = "gmail.com"
+      let matchstr = "@gmail.com"
       for(let i = 0 ; i < email.length ; i++){
         if(email[i] === "@"){
           flag = 1;
@@ -37,10 +37,11 @@ let navigate = useNavigate()
         if(flag === 1){
           str+=email[i];
         }
-
+          
       } 
-      if(str !==matchstr){
+      if(str !== matchstr){
             toast.error("error in email")
+            return
       }
       if (
         !emailRegex.test(email) ||
@@ -54,6 +55,7 @@ let navigate = useNavigate()
       }
 if(name.length <5){
   toast.error("name must be 5 charecters")
+  return;
 }
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters");
