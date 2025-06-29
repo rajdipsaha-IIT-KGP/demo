@@ -25,12 +25,19 @@ let navigate = useNavigate()
       return;
     }
 
-   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    if (!emailRegex.test(email)) {
-      toast.error("Please enter a valid email");
-      return;
-    }
+      const emailRegex = /^[a-zA-Z0-9](?!.*\.\.)[a-zA-Z0-9._%+-]{0,62}[a-zA-Z0-9]@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const [localPart] = email.split('@');
+  
+      if (
+        !emailRegex.test(email) ||
+        /^[.]+$/.test(localPart) ||
+        /[<>\/]/.test(localPart) ||
+        localPart.startsWith('.') ||
+        localPart.endsWith('.')
+      ) {
+        toast.error("Please enter a valid email address");
+        return;
+      }
 
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters");
